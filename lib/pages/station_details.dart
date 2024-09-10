@@ -1,172 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:fl_chart/fl_chart.dart';  // Add this for colorful graphs
+import 'widgets/station_map.dart';  // Import the custom map widget
+import 'widgets/stationDetails/temperature_card.dart'; 
+import 'widgets/stationDetails/humidity_card.dart'; 
+import 'widgets/stationDetails/accelerometer_graph.dart'; 
+import 'widgets/stationDetails/acoustic_sound_graph.dart';
+import 'widgets/status_card.dart'; // Import the StatusCard widget
 
 class StationDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String stationName = ModalRoute.of(context)?.settings.arguments as String;
 
-    // Hardcoded location for the map
-    final LatLng stationLocation = LatLng(37.7749, -122.4194); // Random coordinates
+    // Hardcoded location for the map using random coordinates
+    final LatLng stationLocation = LatLng(12.8406, 80.1534); // Example: Eiffel Tower coordinates
+
+    // Example status: true for working properly, false for anomaly
+    final bool isWorkingProperly = false; // You can update this based on your logic
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$stationName Details'),
+        title: Text(
+          '$stationName Details',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.black87, // Dark-themed app bar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white), // Custom color for back button
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous page
+          },
+        ),
       ),
+      backgroundColor: Colors.black, 
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Center(
-              child: Text(
-                'Monitoring Data for $stationName',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+            SizedBox(height: 10),
+
+            // First Row: Temperature and Humidity
+            Row(
+              children: [
+                TemperatureCard(),
+                SizedBox(width: 10),
+                HumidityCard(),
+              ],
             ),
             SizedBox(height: 20),
 
-            // Track condition card
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Track Condition', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Text('Wear: Low', style: TextStyle(fontSize: 16)),
-                    Text('Distance from center: 2km', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
+            // Status Card
+            StatusCard(isWorkingProperly: isWorkingProperly),
             SizedBox(height: 20),
 
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Text('Temperature', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 10),
-                        Text('24°C', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text('Humidity', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 10),
-                        Text('65%', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            AccelerometerGraph(),
             SizedBox(height: 20),
 
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text('Accelerometer Reading', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
-                    Center(
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            CircularProgressIndicator(
-                              value: 0.75,  // Simulated reading (75%)
-                              strokeWidth: 10,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                              backgroundColor: Colors.grey[300],
-                            ),
-                            Text('75%', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Acoustic Sound Graph
+            AcousticSoundGraph(),
             SizedBox(height: 20),
 
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 40),
-                        SizedBox(height: 10),
-                        Text('Normal', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(Icons.warning, color: Colors.orange, size: 40),
-                        SizedBox(height: 10),
-                        Text('Warning', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(Icons.error, color: Colors.red, size: 40),
-                        SizedBox(height: 10),
-                        Text('Fault Detected', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                  ],
-                ),
+            // "Station Location" text before the map widget
+            Text(
+              'Station Location',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
-            // Embedded Google Map showing the station location
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              elevation: 5,
-              child: SizedBox(
-                height: 300,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: stationLocation,
-                      zoom: 14.0,
-                    ),
-                    markers: {
-                      Marker(
-                        markerId: MarkerId('station_marker'),
-                        position: stationLocation,
-                        infoWindow: InfoWindow(
-                          title: stationName,
-                          snippet: 'Station Location',
-                        ),
-                      ),
-                    },
-                  ),
-                ),
+            // Map Widget
+            Container(
+              height: 300,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey[800]!),
               ),
+              child: StationMap(stationLocation: stationLocation),  // Custom map widget
             ),
           ],
         ),
