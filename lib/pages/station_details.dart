@@ -7,6 +7,7 @@ import 'widgets/stationDetails/humidity_card.dart';
 import 'widgets/stationDetails/accelerometer_graph.dart'; 
 import 'widgets/stationDetails/acoustic_sound_graph.dart';
 import 'widgets/status_card.dart'; // Import the StatusCard widget
+import 'widgets/stationDetails/gyro_graph.dart';
 
 class StationDetailsPage extends StatelessWidget {
   @override
@@ -58,6 +59,8 @@ class StationDetailsPage extends StatelessWidget {
             AccelerometerGraph(),
             SizedBox(height: 20),
 
+            GyroscopeGauge(),
+            SizedBox(height: 20),
             // Acoustic Sound Graph
             AcousticSoundGraph(),
             SizedBox(height: 20),
