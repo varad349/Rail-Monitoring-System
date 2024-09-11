@@ -154,7 +154,7 @@ class RailMonitoringApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => WebSocketService('ws://192.168.66.222:81/'),
+          create: (_) => WebSocketService('ws://192.168.236.222:81/'),
         ),
       ],
       child: MaterialApp(
