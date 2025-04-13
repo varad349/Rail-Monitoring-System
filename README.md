@@ -31,3 +31,32 @@ A Flutter application for real-time monitoring of rail systems using sensor data
 - 🗺️ **Maps Integration**
   - Interactive map using Flutter Map (Leaflet) to display station locations
 
+## 🛠️ Installation
+
+1.  **Clone the repository**
+   ```bash
+   git clone https://github.com/varad349/Rail-Monitoring-System.git
+   ```
+
+2.  **Navigate to the project directory**
+   ```bash
+   cd rail-monitoring-system
+   ```
+
+3.  **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+4.  **Configure WebSocket URL**  
+   Open `main.dart` and update the WebSocket URL to your server:
+   ```dart
+   ChangeNotifierProvider(
+     create: (_) => WebSocketService('ws://your-server-url:port/'),
+   ),
+   ```
+
+5.  **Run the application**
+   ```bash
+   flutter run
+   ```
