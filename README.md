@@ -15,6 +15,15 @@ A Flutter application for real-time monitoring of rail systems using sensor data
 - 🗺️ **Station Geolocation**: Map integration showing the physical location of each station  
 - 🌙 **Dark Theme UI**: Eye-friendly interface optimized for field use  
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/s1.jpg" width="250"/>
+  <img src="assets/s2.jpg" width="250"/>
+  <img src="assets/s3.jpg" width="250"/>
+  <img src="assets/s4.jpg" width="250"/>
+</p>
+
 ## Technical Implementation
 
 - 🔌 **WebSocket Connection**
